@@ -50,6 +50,9 @@ func renderTodosPage(w http.ResponseWriter, r *http.Request, userInfo user.Info)
 	page := 1  // default value
 	totalTodos, err := todosDB.GetCountTodos(userInfo)
 	totalPages := (totalTodos + limit - 1) / limit
+	if totalPages == 0 {
+		totalPages = 1
+	}
 	if pageParam := r.URL.Query().Get("page"); pageParam != "" {
 		parsedPage, err := strconv.Atoi(pageParam)
 		if err == nil && parsedPage > 0 && parsedPage <= totalPages {
@@ -78,33 +81,37 @@ func renderTodosPage(w http.ResponseWriter, r *http.Request, userInfo user.Info)
 }
 
 func handlerTodosPost(w http.ResponseWriter, r *http.Request, userInfo user.Info) {
-	if err := r.ParseForm(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	var todoTitleDesc struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&todoTitleDesc)
+	if err != nil {
+		http.Error(w, "Invalid input data", http.StatusForbidden)
 		return
 	}
 
 	todo := todos.Todo{
 		ID:          "0",
 		UserId:      strconv.Itoa(userInfo.ID),
-		Title:       r.FormValue("title"),
-		Description: r.FormValue("description"),
+		Title:       todoTitleDesc.Title,
+		Description: todoTitleDesc.Description,
 		IsDone:      false,
 	}
-	todo, err := todosDB.AddTodo(todo)
+
+	todo, err = todosDB.AddTodo(todo)
 	if err != nil {
 		http.Error(w, "Error add todo.", http.StatusForbidden)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(todo); err != nil {
+		http.Error(w, "Invalid response data.", http.StatusForbidden)
+		return
+	}
 }
 
 func handlerTodosPut(w http.ResponseWriter, r *http.Request, userInfo user.Info) {
-	if err := r.ParseForm(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	// encode body data
 	var newDataTodo struct {
 		Title       string `json:"title"`
@@ -138,11 +145,6 @@ func handlerTodosPut(w http.ResponseWriter, r *http.Request, userInfo user.Info)
 }
 
 func handlerTodosDelete(w http.ResponseWriter, r *http.Request, userInfo user.Info) {
-	if err := r.ParseForm(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	var todo todos.Todo
 	todo.ID = mux.Vars(r)["id"]
 
@@ -162,11 +164,6 @@ func handlerTodosDelete(w http.ResponseWriter, r *http.Request, userInfo user.In
 
 // this func update todos status
 func handlerTodosPatch(w http.ResponseWriter, r *http.Request, userInfo user.Info) {
-	if err := r.ParseForm(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	var todo todos.Todo
 	var todoStatus struct {
 		Status bool `json:"isDone"`

@@ -1,26 +1,24 @@
-/* Основные стили */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
 }
 
 .container {
     width: 90%;
     max-width: 600px;
-    background-color: #fff;
-    padding: 2rem;
+    background-color: #ffffff;
     border-radius: 8px;
+    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -28,183 +26,209 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 20px;
 }
 
 header h1 {
-    font-size: 1.5rem;
+    font-size: 24px;
     color: #333;
 }
 
-.add-todo {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
+.btn-home, .add-todo {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 8px 16px;
     border-radius: 5px;
+    text-decoration: none;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.add-todo:hover {
-    background-color: #45a049;
+.add-todo {
+    background-color: #28a745;
 }
 
-.todo-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+section.todo-list {
+    margin-bottom: 20px;
 }
 
 .todo-item {
-    padding: 1rem;
-    background-color: #f9f9f9;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.todo-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.todo-status {
+    margin-right: 10px;
+}
+
+.todo-title {
+    font-size: 18px;
+    color: #333;
+    flex: 1;
+}
+
+.todo-description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+}
+
+.todo-actions {
+    position: relative;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+.todo-menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    padding: 5px 0;
+}
+
+.todo-menu button {
+    background: none;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: #333;
+}
+
+.todo-menu button:hover {
+    background-color: #f1f1f1;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.page-link {
+    margin: 0 5px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-link:hover {
+    text-decoration: underline;
 }
 
 /* Модальное окно */
+/* Стили для затемнения фона модального окна */
 .modal {
-    display: none; /* Скрыто по умолчанию */
+    display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
-    transition: opacity 0.3s ease;
+    align-items: center;
 }
 
+/* Стили для содержимого модального окна */
 .modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    animation: fadeIn 0.3s;
 }
 
+/* Плавная анимация */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Кнопка закрытия модального окна */
 .close {
-    color: #aaa;
-    font-size: 24px;
     position: absolute;
     top: 10px;
-    right: 15px;
-    font-weight: bold;
+    right: 10px;
+    font-size: 20px;
     cursor: pointer;
-    transition: color 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-}
-
+/* Заголовок модального окна */
 .modal-content h2 {
-    text-align: center;
-    margin-bottom: 1rem;
+    margin: 0;
+    padding-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
 }
 
-.modal-content form {
-    display: flex;
-    flex-direction: column;
-}
-
+/* Стили для меток и полей ввода */
 .modal-content label {
+    display: block;
     font-weight: bold;
-    margin-top: 1rem;
+    margin-top: 15px;
+    color: #555;
 }
 
 .modal-content input[type="text"],
 .modal-content textarea {
     width: 100%;
     padding: 10px;
-    margin-top: 0.5rem;
-    border: 1px solid #ddd;
+    margin-top: 5px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: #333;
 }
 
-.modal-content textarea {
-    resize: vertical;
+.modal-content input[type="text"]:focus,
+.modal-content textarea:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
-.modal-content button[type="submit"] {
-    background-color: #4CAF50;
+/* Стили для кнопки "Добавить" */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 10px;
-    margin-top: 1rem;
     border-radius: 5px;
+    font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.modal-content button[type="submit"]:hover {
-    background-color: #45a049;
-}
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+.submit-btn:hover {
+    background-color: #0056b3;
 }
 
-.todo-item {
-    background: #f9f9f9;
-    padding: 15px;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-.todo-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;  /* Ensure elements are spaced out */
-}
-
-.todo-title {
-    flex-grow: 1;  /* Allow title to take the remaining space */
-    margin-left: 10px;
-    font-size: 18px;
-}
-
-.todo-status {
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
-
-.todo-actions {
-    margin-left: auto;  /* This will push the actions to the right */
-}
-
-.todo-actions button {
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.todo-menu {
-    position: absolute;
-    right: 0;
-    top: 25px; /* Adjust as needed */
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 5px;
-    display: none;
-    z-index: 10;
-}
-
-.todo-description {
-    margin-top: 5px;
-    color: #666;
-}

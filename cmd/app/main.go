@@ -20,6 +20,7 @@ func main() {
 	cfg := config.GetConfig().Server
 	r := mux.NewRouter()
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
+	r.PathPrefix("/scripts/").Handler(http.StripPrefix("/scripts/", http.FileServer(http.Dir("web/scripts"))))
 	r.HandleFunc("/", home.HandlerHome).Methods("GET")
 	r.HandleFunc("/login", login.HandlerLogin)
 	r.HandleFunc("/register", register.HandlerRegister)

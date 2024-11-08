@@ -1,1 +1,4 @@
-# You can have your own account... also can add, edit, delete todos.
+# Add, edit, delete todos.
+
+Roadmap project link:
+https://roadmap.sh/projects/todo-list-api
